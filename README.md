@@ -1,6 +1,6 @@
 # CORPALIV 2.0
 
-Proyecto académico Android nativo con dos microservicios Spring Boot y MySQL. **Sprint 1** incorpora la aplicación visual navegable en Jetpack Compose. Los programas, solicitudes y el acceso gestor usan datos ficticios en memoria, identificados dentro de la app. La conexión real con los servicios corresponde a Sprint 2.
+Proyecto académico Android nativo con Jetpack Compose, dos microservicios Spring Boot y MySQL. **Sprint 2** conecta programas, solicitudes, seguimiento y gestión con los servicios locales. Los tres programas iniciales son contenido académico de demostración; las solicitudes de prueba se guardan realmente en MySQL.
 
 ## Estructura
 
@@ -12,9 +12,11 @@ Proyecto académico Android nativo con dos microservicios Spring Boot y MySQL. *
 
 ## Inicio rápido
 
-Lee [docs/ejecucion-local.md](docs/ejecucion-local.md). Los endpoints de Sprint 0 son `GET http://localhost:8081/actuator/health` y `GET http://localhost:8082/actuator/health`. Devuelven 200 solo cuando el servicio puede consultar MySQL.
+Lee [docs/ejecucion-local.md](docs/ejecucion-local.md). Inicia MySQL y ambos servicios antes de abrir la app. El emulador usa `10.0.2.2` para acceder a los puertos locales 8081 y 8082. Comprueba `GET http://127.0.0.1:8081/actuator/health` y `GET http://127.0.0.1:8082/actuator/health`; `UP` incluye la conexión a MySQL.
 
-Resultados de Sprint 0: [docs/evidencia-sprint-0.md](docs/evidencia-sprint-0.md). Recorrido y capturas de Sprint 1: [docs/evidencia-sprint-1.md](docs/evidencia-sprint-1.md). Los PDF/ZIP académicos del profesor y los archivos privados permanecen fuera de este repositorio.
+Flujo principal: Compose → `AppViewModel` → `ApiRepository`/Retrofit → Controller → Service → Repository JPA → MySQL. `ms-contenidos` expone `GET /programas` y `GET /programas/{id}`. `ms-vinculacion` expone `POST /solicitudes`, `GET /seguimiento/{codigo}` y rutas `/admin/**` protegidas con Spring Security. El feriado se consulta por una API externa HTTPS independiente.
+
+Resultados: [Sprint 0](docs/evidencia-sprint-0.md), [Sprint 1](docs/evidencia-sprint-1.md) y [Sprint 2](docs/evidencia-sprint-2.md). Los PDF/ZIP académicos del profesor y los archivos privados permanecen fuera de este repositorio.
 
 ## Autoría y alcance
 

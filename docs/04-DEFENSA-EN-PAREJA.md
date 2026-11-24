@@ -21,7 +21,7 @@
 - **¿Qué es Repository?** Centraliza el origen de datos para que ViewModel no dependa de detalles HTTP/SQL.
 - **¿Por qué dos microservicios?** Separamos contenidos de solicitudes para dividir responsabilidades; gestión se mantiene dentro de vinculación para no crear otro servicio sin beneficio tangible. La pauta final puede precisar más.
 - **¿Quién valida?** Ambos extremos: Android para informar al usuario y Spring Boot como control definitivo.
-- **¿Cómo se protege el gestor?** Spring Security protege rutas; hash BCrypt de contraseñas; credenciales no quedan en disco. HTTP Basic solo para demo local, HTTPS obligatorio en despliegue real.
+- **¿Cómo se protege el gestor?** Spring Security protege rutas; MySQL guarda un hash BCrypt. La clave local de demostración queda en `tmp/`, fuera de Git, y Android la conserva solo en memoria durante la sesión. HTTP Basic solo para demo local; HTTPS es obligatorio en un despliegue real.
 - **¿Por qué un código opaco?** Para que el número interno no permita enumerar solicitudes y el visitante solo consulte su estado.
 - **¿Por qué API externa?** Para mostrar feriados de Chile como información útil para planificar actividades; falla sin bloquear el CRUD propio.
 - **¿Qué es CRUD?** Create, Read, Update, Delete: registrar/consultar/actualizar/eliminar.
