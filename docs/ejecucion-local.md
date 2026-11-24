@@ -1,4 +1,4 @@
-# Ejecución local de Sprint 0
+# Ejecución local de CORPALIV 2.0
 
 ## Requisitos
 
@@ -20,8 +20,10 @@ Definir `JAVA_HOME` para un JDK 17 o superior (para Maven). Desde `backend/ms-co
 
 ## Android
 
-Abrir `android/` en Android Studio, configurar Gradle JDK 17, esperar sincronización Gradle, seleccionar el AVD y pulsar Run. La pantalla de Sprint 0 muestra el nombre del proyecto. En Sprint 2 la app utilizará `10.0.2.2:8081` y `10.0.2.2:8082` desde el emulador para llegar al host; en un teléfono físico se requiere otra dirección y red alcanzable. HTTP solo se permitirá en debug local cuando se conecten los servicios; producción requiere HTTPS. El AVD actual de este PC no inicia porque falta aceleración x86_64; usar un teléfono Android con depuración USB o habilitar el hipervisor antes de la prueba visual.
+Abrir `android/` en Android Studio, configurar Gradle JDK 17, esperar la sincronización, seleccionar `CORPALIV_Test_API_37` y pulsar Run. También se puede compilar con `android/gradlew.bat -p android :app:assembleDebug`. El emulador de prueba quedó operativo con Windows Hypervisor Platform; `emulator.exe -accel-check` informa `WHPX ... installed and usable`. Si Android Studio muestra el AVD antiguo `Medium_Phone_API_37.0`, seleccionar el AVD de prueba, que se creó sin borrar el anterior.
+
+La app de Sprint 1 usa datos ficticios en memoria: `DEMO-8F3K9D` sirve para probar Seguimiento. En el menú secundario se abre Acceso gestor; cualquier usuario y contraseña **ficticios y no vacíos** muestran el panel temporal. No introducir claves reales. Reiniciar el proceso de la app restablece los datos de ejemplo. En Sprint 2 la app utilizará `10.0.2.2:8081` y `10.0.2.2:8082` desde el emulador para llegar al host; en un teléfono físico se requiere otra dirección y red alcanzable. HTTP solo se permitirá en debug local cuando se conecten los servicios; producción requiere HTTPS.
 
 ## Límites de esta entrega
 
-Sprint 0 no implementa aún programas, solicitudes, autenticación, Retrofit ni el CRUD. No se debe presentar la pantalla de arranque como la app final.
+Sprint 1 no persiste solicitudes, no autentica ni consulta los microservicios. Las pantallas de gestión y seguimiento son una demostración local para revisar el flujo visual. No presentarlas como integración real.

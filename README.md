@@ -1,6 +1,6 @@
 # CORPALIV 2.0
 
-Proyecto académico Android nativo con dos microservicios Spring Boot y MySQL. Este repositorio contiene por ahora **Sprint 0**: una pantalla de arranque y dos servicios con comprobación de base de datos. Las funciones del MVP se implementarán en los siguientes sprints.
+Proyecto académico Android nativo con dos microservicios Spring Boot y MySQL. **Sprint 1** incorpora la aplicación visual navegable en Jetpack Compose. Los programas, solicitudes y el acceso gestor usan datos ficticios en memoria, identificados dentro de la app. La conexión real con los servicios corresponde a Sprint 2.
 
 ## Estructura
 
@@ -14,7 +14,7 @@ Proyecto académico Android nativo con dos microservicios Spring Boot y MySQL. E
 
 Lee [docs/ejecucion-local.md](docs/ejecucion-local.md). Los endpoints de Sprint 0 son `GET http://localhost:8081/actuator/health` y `GET http://localhost:8082/actuator/health`. Devuelven 200 solo cuando el servicio puede consultar MySQL.
 
-Resultados y bloqueos verificados: [docs/evidencia-sprint-0.md](docs/evidencia-sprint-0.md). Los PDF/ZIP académicos del profesor y los archivos privados permanecen fuera de este repositorio.
+Resultados de Sprint 0: [docs/evidencia-sprint-0.md](docs/evidencia-sprint-0.md). Recorrido y capturas de Sprint 1: [docs/evidencia-sprint-1.md](docs/evidencia-sprint-1.md). Los PDF/ZIP académicos del profesor y los archivos privados permanecen fuera de este repositorio.
 
 ## Autoría y alcance
 
