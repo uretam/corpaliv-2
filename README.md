@@ -16,7 +16,7 @@ Lee [docs/ejecucion-local.md](docs/ejecucion-local.md). Inicia MySQL y ambos ser
 
 Flujo principal: Compose → `AppViewModel` → `ApiRepository`/Retrofit → Controller → Service → Repository JPA → MySQL. `ms-contenidos` expone `GET /programas` y `GET /programas/{id}`. `ms-vinculacion` expone `POST /solicitudes`, `GET /seguimiento/{codigo}` y rutas `/admin/**` protegidas con Spring Security. El feriado se consulta por una API externa HTTPS independiente.
 
-Resultados: [Sprint 0](docs/evidencia-sprint-0.md), [Sprint 1](docs/evidencia-sprint-1.md) y [Sprint 2](docs/evidencia-sprint-2.md). Los PDF/ZIP académicos del profesor y los archivos privados permanecen fuera de este repositorio.
+Resultados: [Sprint 0](docs/evidencia-sprint-0.md), [Sprint 1](docs/evidencia-sprint-1.md), [Sprint 2](docs/evidencia-sprint-2.md) y [Sprint 3: pruebas y cobertura](docs/evidencia-sprint-3.md). Los PDF/ZIP académicos del profesor y los archivos privados permanecen fuera de este repositorio.
 
 ## Autoría y alcance
 

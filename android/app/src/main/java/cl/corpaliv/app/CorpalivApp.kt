@@ -3,7 +3,6 @@ package cl.corpaliv.app
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.util.Patterns
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable

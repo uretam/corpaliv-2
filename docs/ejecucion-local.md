@@ -27,3 +27,7 @@ La app de Sprint 2 usa `10.0.2.2:8081` y `10.0.2.2:8082` desde el emulador para 
 ## Límites de esta entrega
 
 Las semillas de programas son académicas y no afirman datos institucionales reales. El hash del gestor se crea con variables de entorno solo si todavía no existe ese usuario. El límite de seguimiento es de 30 peticiones por IP y minuto en memoria; se reinicia con el servicio y no es distribuido. Para cambiar la URL del backend o usar un dispositivo físico hay que ajustar `ApiRepository.kt` y la configuración de red debug. No se ha preparado despliegue público ni HTTPS para el backend.
+
+## Pruebas de Sprint 3
+
+Con JDK 21 y el SDK configurados, ejecutar desde la raíz `android/gradlew.bat -p android :app:testDebugUnitTest :app:jacocoLogicReport :app:jacocoAppReport :app:assembleDebug`. Los informes HTML quedan en `android/app/build/reports/jacoco/`; los XML verificados se conservaron en `docs/`. Para la prueba integral, iniciar MySQL, ambos servicios y el AVD antes de `android/gradlew.bat -p android :app:connectedDebugAndroidTest`. Esta prueba crea una solicitud ficticia real y consulta la API externa; requiere conectividad. En cada servicio, `.\mvnw.cmd test` ejecuta las pruebas Java.

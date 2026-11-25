@@ -1,6 +1,5 @@
 package cl.corpaliv.app
 
-import android.util.Base64
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -19,6 +18,19 @@ data class EstadoRespuesta(val estado: String)
 data class Feriado(val date: String, val title: String)
 data class FeriadosRespuesta(val data: List<Feriado>)
 
+interface AppRepository {
+    suspend fun programas(): List<Programa>
+    suspend fun detalle(id: Int): Programa
+    suspend fun crear(data: CrearSolicitud): String
+    suspend fun estado(codigo: String): String
+    suspend fun login(auth: String): Boolean
+    suspend fun solicitudes(auth: String): List<Solicitud>
+    suspend fun actualizar(auth: String, id: Long, data: Map<String, String>): Solicitud
+    suspend fun eliminar(auth: String, id: Long)
+    suspend fun proximoFeriado(): Feriado?
+    fun basic(usuario: String, clave: String): String
+}
+
 private interface ContenidosApi {
     @GET("programas") suspend fun programas(): List<Programa>
     @GET("programas/{id}") suspend fun detalle(@Path("id") id: Int): Programa
@@ -34,20 +46,30 @@ private interface VinculacionApi {
 }
 private interface FeriadosApi { @GET("feriados.json") suspend fun listar(): FeriadosRespuesta }
 
-class ApiRepository {
+class ApiRepository(
+    contenidosUrl: String = "http://10.0.2.2:8081/",
+    vinculacionUrl: String = "http://10.0.2.2:8082/",
+    feriadosUrl: String = "https://api.roison.cl/",
+    private val hoy: () -> java.time.LocalDate = { java.time.LocalDate.now() }
+) : AppRepository {
     private val client = OkHttpClient.Builder().connectTimeout(8, TimeUnit.SECONDS).readTimeout(8, TimeUnit.SECONDS).callTimeout(12, TimeUnit.SECONDS).build()
     private fun retrofit(url: String) = Retrofit.Builder().baseUrl(url).client(client).addConverterFactory(GsonConverterFactory.create()).build()
-    private val contenidos = retrofit("http://10.0.2.2:8081/").create(ContenidosApi::class.java)
-    private val vinculacion = retrofit("http://10.0.2.2:8082/").create(VinculacionApi::class.java)
-    private val feriados = retrofit("https://api.roison.cl/").create(FeriadosApi::class.java)
-    suspend fun programas() = contenidos.programas()
-    suspend fun detalle(id: Int) = contenidos.detalle(id)
-    suspend fun crear(data: CrearSolicitud) = vinculacion.crear(data).codigoSeguimiento
-    suspend fun estado(codigo: String) = vinculacion.estado(codigo).estado
-    suspend fun login(auth: String) = vinculacion.login(auth).isSuccessful
-    suspend fun solicitudes(auth: String) = vinculacion.listar(auth)
-    suspend fun actualizar(auth: String, id: Long, data: Map<String, String>) = vinculacion.actualizar(auth, id, data)
-    suspend fun eliminar(auth: String, id: Long) = vinculacion.eliminar(auth, id)
-    suspend fun proximoFeriado(): Feriado? = feriados.listar().data.filter { it.date >= java.time.LocalDate.now().toString() }.minByOrNull { it.date }
-    fun basic(usuario: String, clave: String): String = "Basic " + Base64.encodeToString("$usuario:$clave".toByteArray(), Base64.NO_WRAP)
+    private val contenidos = retrofit(contenidosUrl).create(ContenidosApi::class.java)
+    private val vinculacion = retrofit(vinculacionUrl).create(VinculacionApi::class.java)
+    private val feriados = retrofit(feriadosUrl).create(FeriadosApi::class.java)
+    override suspend fun programas() = contenidos.programas()
+    override suspend fun detalle(id: Int) = contenidos.detalle(id)
+    override suspend fun crear(data: CrearSolicitud) = vinculacion.crear(data).codigoSeguimiento
+    override suspend fun estado(codigo: String) = vinculacion.estado(codigo).estado
+    override suspend fun login(auth: String): Boolean {
+        val respuesta = vinculacion.login(auth)
+        if (respuesta.code() == 401) return false
+        if (!respuesta.isSuccessful) throw retrofit2.HttpException(respuesta)
+        return true
+    }
+    override suspend fun solicitudes(auth: String) = vinculacion.listar(auth)
+    override suspend fun actualizar(auth: String, id: Long, data: Map<String, String>) = vinculacion.actualizar(auth, id, data)
+    override suspend fun eliminar(auth: String, id: Long) { vinculacion.eliminar(auth, id) }
+    override suspend fun proximoFeriado(): Feriado? = feriados.listar().data.filter { it.date >= hoy().toString() }.minByOrNull { it.date }
+    override fun basic(usuario: String, clave: String): String = "Basic " + java.util.Base64.getEncoder().encodeToString("$usuario:$clave".toByteArray())
 }

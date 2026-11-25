@@ -12,8 +12,8 @@ data class AppState(val pantalla: Pantalla = Pantalla.INICIO, val programaId: In
     val solicitudes: List<Solicitud> = emptyList(), val solicitudCodigo: String = "", val gestorAutenticado: Boolean = false,
     val cargando: Boolean = false, val error: String? = null, val feriado: Feriado? = null, val feriadoError: Boolean = false)
 
-class AppViewModel : ViewModel() {
-    private val repo = ApiRepository()
+class AppViewModel(private val repo: AppRepository) : ViewModel() {
+    constructor() : this(ApiRepository())
     private var autorizacion: String? = null // Solo memoria.
     private val _state = MutableStateFlow(AppState())
     val state = _state.asStateFlow()
@@ -22,8 +22,8 @@ class AppViewModel : ViewModel() {
     fun limpiarError() { _state.value = _state.value.copy(error = null) }
     fun cargarProgramas() = viewModelScope.launch {
         _state.value = _state.value.copy(cargando = true, error = null)
-        try { android.util.Log.d("Corpaliv", "Solicitando programas"); val lista = repo.programas(); android.util.Log.d("Corpaliv", "Programas recibidos: ${lista.size}"); _state.value = _state.value.copy(programas = lista, cargando = false) }
-        catch (e: Exception) { android.util.Log.e("Corpaliv", "Error al cargar programas", e); fallo() }
+        try { _state.value = _state.value.copy(programas = repo.programas(), cargando = false) }
+        catch (e: Exception) { fallo() }
     }
     fun cargarFeriado() = viewModelScope.launch {
         try { _state.value = _state.value.copy(feriado = repo.proximoFeriado(), feriadoError = false) }
@@ -49,7 +49,7 @@ class AppViewModel : ViewModel() {
         _state.value = _state.value.copy(cargando = true, consulta = null, error = null)
         try { _state.value = _state.value.copy(consulta = repo.estado(codigo), cargando = false) }
         catch (e: retrofit2.HttpException) { _state.value = _state.value.copy(consulta = if (e.code() == 404) "NO_ENCONTRADA" else null,
-            cargando = false, error = if (e.code() == 429) "Demasiadas consultas. Espera un minuto." else null) }
+            cargando = false, error = when (e.code()) { 404 -> null; 429 -> "Demasiadas consultas. Espera un minuto."; else -> "No se pudo consultar el estado. Inténtalo nuevamente." }) }
         catch (e: Exception) { fallo() }
     }
     fun entrar(usuario: String, clave: String) = viewModelScope.launch {

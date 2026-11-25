@@ -20,7 +20,7 @@ public class SolicitudService {
             || data.correo() == null || !data.correo().matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$") || data.correo().length() > 254
             || data.mensaje() == null || data.mensaje().trim().length() < 10 || data.mensaje().length() > 2000
             || data.modalidad() == null || !List.of("Donación", "Voluntariado", "Alianza", "Capacitación").contains(data.modalidad())
-            || !data.aceptaPrivacidad() || (data.telefono() != null && data.telefono().length() > 40))
+            || !data.aceptaPrivacidad() || (data.telefono() != null && !data.telefono().isBlank() && !data.telefono().trim().matches("^[+0-9 ()-]{7,20}$")))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Datos inválidos");
         Solicitud s = new Solicitud();
         s.codigoSeguimiento = UUID.randomUUID().toString();

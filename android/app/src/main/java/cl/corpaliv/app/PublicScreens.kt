@@ -3,7 +3,6 @@ package cl.corpaliv.app
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.util.Patterns
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -93,10 +92,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
     var mensaje by remember { mutableStateOf("") }
     var acepta by remember { mutableStateOf(false) }
     var tried by remember { mutableStateOf(false) }
-    val nombreError = nombre.trim().length < 2
-    val correoError = !Patterns.EMAIL_ADDRESS.matcher(correo.trim()).matches()
-    val telefonoError = telefono.isNotBlank() && !Regex("^[+0-9 ()-]{7,20}$").matches(telefono.trim())
-    val mensajeError = mensaje.trim().length < 10
+    val nombreError = !FormularioValidator.nombreValido(nombre)
+    val correoError = !FormularioValidator.correoValido(correo)
+    val telefonoError = !FormularioValidator.telefonoValido(telefono)
+    val mensajeError = !FormularioValidator.mensajeValido(mensaje)
     Heading("Quiero colaborar", "Elige una modalidad y cuéntanos cómo te gustaría participar.")
     Text("Modalidad de colaboración", color = Navy, fontWeight = FontWeight.Bold)
     listOf(listOf("Donación", "Voluntariado"), listOf("Alianza", "Capacitación")).forEach { row ->
