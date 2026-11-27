@@ -53,8 +53,8 @@ tasks.register<JacocoReport>("jacocoLogicReport") {
     executionData(layout.buildDirectory.file("jacoco/testDebugUnitTest.exec"))
     sourceDirectories.setFrom(files("src/main/java"))
     classDirectories.setFrom(fileTree(layout.buildDirectory.dir("tmp/kotlin-classes/debug")) {
-        include("cl/corpaliv/app/AppViewModel*", "cl/corpaliv/app/AppState*", "cl/corpaliv/app/Pantalla*",
-            "cl/corpaliv/app/ApiRepository*", "cl/corpaliv/app/FormularioValidator*")
+        include("cl/corpaliv/app/viewmodel/AppViewModel*", "cl/corpaliv/app/viewmodel/AppState*", "cl/corpaliv/app/viewmodel/Pantalla*",
+            "cl/corpaliv/app/data/repository/ApiRepository*", "cl/corpaliv/app/viewmodel/FormularioValidator*")
     })
     reports { xml.required.set(true); html.required.set(true) }
 }

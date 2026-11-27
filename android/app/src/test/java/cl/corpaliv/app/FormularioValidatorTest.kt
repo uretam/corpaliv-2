@@ -1,5 +1,9 @@
 package cl.corpaliv.app
 
+import cl.corpaliv.app.data.model.*
+import cl.corpaliv.app.data.repository.*
+import cl.corpaliv.app.viewmodel.*
+
 import org.junit.Assert.*
 import org.junit.Test
 

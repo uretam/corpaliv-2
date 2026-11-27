@@ -1,5 +1,9 @@
 package cl.corpaliv.app
 
+import cl.corpaliv.app.data.model.*
+import cl.corpaliv.app.data.repository.*
+import cl.corpaliv.app.viewmodel.*
+
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*

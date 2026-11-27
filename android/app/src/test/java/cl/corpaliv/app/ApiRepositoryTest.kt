@@ -1,5 +1,9 @@
 package cl.corpaliv.app
 
+import cl.corpaliv.app.data.model.*
+import cl.corpaliv.app.data.repository.*
+import cl.corpaliv.app.viewmodel.*
+
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer

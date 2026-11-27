@@ -1,5 +1,10 @@
 package cl.corpaliv.vinculacion;
 
+import cl.corpaliv.vinculacion.repository.SolicitudRepository;
+import cl.corpaliv.vinculacion.service.SolicitudService;
+import cl.corpaliv.vinculacion.dto.SolicitudDTO;
+import cl.corpaliv.vinculacion.model.Solicitud;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -18,8 +23,8 @@ class SolicitudServiceTest {
         when(repository.save(any(Solicitud.class))).thenAnswer(a -> a.getArgument(0));
     }
 
-    private SolicitudService.Crear valida() {
-        return new SolicitudService.Crear(" Ana ", "ana@example.com", "+56 9 1234 5678", "Voluntariado", "Quiero colaborar", true);
+    private SolicitudDTO.Crear valida() {
+        return new SolicitudDTO.Crear(" Ana ", "ana@example.com", "+56 9 1234 5678", "Voluntariado", "Quiero colaborar", true);
     }
 
     @Test void creaCodigoAleatorioYEstadoInicial() {
@@ -35,12 +40,12 @@ class SolicitudServiceTest {
 
     @Test void rechazaFormularioInvalidoSinGuardar() {
         var casos = java.util.List.of(
-            new SolicitudService.Crear("A", "ana@example.com", "", "Voluntariado", "Quiero colaborar", true),
-            new SolicitudService.Crear("Ana", "sin-correo", "", "Voluntariado", "Quiero colaborar", true),
-            new SolicitudService.Crear("Ana", "ana@example.com", "abc12345", "Voluntariado", "Quiero colaborar", true),
-            new SolicitudService.Crear("Ana", "ana@example.com", "", "Otra", "Quiero colaborar", true),
-            new SolicitudService.Crear("Ana", "ana@example.com", "", "Voluntariado", "corto", true),
-            new SolicitudService.Crear("Ana", "ana@example.com", "", "Voluntariado", "Quiero colaborar", false));
+            new SolicitudDTO.Crear("A", "ana@example.com", "", "Voluntariado", "Quiero colaborar", true),
+            new SolicitudDTO.Crear("Ana", "sin-correo", "", "Voluntariado", "Quiero colaborar", true),
+            new SolicitudDTO.Crear("Ana", "ana@example.com", "abc12345", "Voluntariado", "Quiero colaborar", true),
+            new SolicitudDTO.Crear("Ana", "ana@example.com", "", "Otra", "Quiero colaborar", true),
+            new SolicitudDTO.Crear("Ana", "ana@example.com", "", "Voluntariado", "corto", true),
+            new SolicitudDTO.Crear("Ana", "ana@example.com", "", "Voluntariado", "Quiero colaborar", false));
         for (var caso : casos) assertEquals(HttpStatus.BAD_REQUEST,
             assertThrows(ResponseStatusException.class, () -> service.crear(caso)).getStatusCode());
         verify(repository, never()).save(any());
@@ -57,10 +62,10 @@ class SolicitudServiceTest {
     @Test void actualizaEstadoPermitidoYRechazaDesconocido() {
         Solicitud s = new Solicitud(); s.nombre = "Ana";
         when(repository.findById(7L)).thenReturn(Optional.of(s));
-        assertEquals("CONTACTADO", service.actualizar(7L, new SolicitudService.Cambiar(null, "CONTACTADO")).estado);
-        assertEquals("Berta", service.actualizar(7L, new SolicitudService.Cambiar(" Berta ", null)).nombre);
+        assertEquals("CONTACTADO", service.actualizar(7L, new SolicitudDTO.Cambiar(null, "CONTACTADO")).estado);
+        assertEquals("Berta", service.actualizar(7L, new SolicitudDTO.Cambiar(" Berta ", null)).nombre);
         assertEquals(HttpStatus.BAD_REQUEST, assertThrows(ResponseStatusException.class,
-            () -> service.actualizar(7L, new SolicitudService.Cambiar(null, "DESCONOCIDO"))).getStatusCode());
+            () -> service.actualizar(7L, new SolicitudDTO.Cambiar(null, "DESCONOCIDO"))).getStatusCode());
     }
 
     @Test void eliminaSoloSiExiste() {

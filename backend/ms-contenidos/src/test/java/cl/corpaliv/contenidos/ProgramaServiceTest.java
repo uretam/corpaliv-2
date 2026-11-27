@@ -1,5 +1,9 @@
 package cl.corpaliv.contenidos;
 
+import cl.corpaliv.contenidos.repository.ProgramaRepository;
+import cl.corpaliv.contenidos.model.Programa;
+import cl.corpaliv.contenidos.service.ProgramaService;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import java.util.List;

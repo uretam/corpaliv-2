@@ -1,5 +1,9 @@
 package cl.corpaliv.app
 
+import cl.corpaliv.app.data.model.*
+import cl.corpaliv.app.data.repository.*
+import cl.corpaliv.app.viewmodel.*
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher

@@ -1,5 +1,7 @@
 # Ejecución local de CORPALIV 2.0
 
+En esta PC puedes iniciar todo con `powershell -ExecutionPolicy Bypass -File .\iniciar-defensa.ps1` desde la raíz. El script usa solo los archivos privados locales bajo `tmp/` y abre la app en el emulador visible. Para la explicación del código, lee [guia-defensa-codigo.md](guia-defensa-codigo.md).
+
 ## Requisitos
 
 - Android Studio con SDK Android 37 y un emulador configurado. Abrir la carpeta `android/` como proyecto independiente.
